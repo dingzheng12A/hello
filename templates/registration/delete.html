@@ -1,0 +1,143 @@
+<html>
+<head>
+<style>
+.input1{  
+        background:#9C3;  
+        } 
+</style>
+<script type="text/javascript" src="/js/jquery.min.js"></script>
+<script type="text/javascript">
+$(function(){
+	$("#bookinfo tr").each(function(){
+		var input=$(this).children("td:eq(5)").find("#delete");
+		var $id=$(this).children("td:eq(0)").find("#id");
+		$id.click(function(){
+			if($id.is(':checked')){
+				$id.parent().parent().addClass('input1');
+			}else{	
+				$id.parent().parent().removeClass('input1');
+			};
+			
+		});
+		input.click(function(){
+				if($id.is(':checked')){
+					$.post("/dels/",
+					{'id':$id.val()},
+					function(data,Status){
+						alert("Data: "+data+"\nStatus: "+Status);
+						window.parent.location.reload();
+					});
+
+				}else{
+					alert("你必须选择才能够进行操作!");
+				};
+		});
+	});
+	$("#checkall").click(function(){
+		alert("全选");
+		var notcheck=$("#notcheckall");
+		notcheck.removeAttr('checked');
+		$("#bookinfo tr").each(function(i){
+			var id=$(this).children("td:eq(0)").find("#id")
+			id.attr('checked','checked');
+			id.parent().parent().addClass("input1");
+		});
+		
+	});
+
+	$("#notcheckall").click(function(){
+		alert("全不选");
+		var check=$("#checkall");
+		check.removeAttr('checked');
+		$("#bookinfo tr").each(function(i){
+			var id=$(this).children("td:eq(0)").find("#id")
+			id.attr('checked',false);
+			id.parent().parent().removeClass("input1");
+		});
+	});
+	$('#check').click(function(){
+		var strings='';	
+		$("#bookinfo tr").each(function(){
+		var	id=$(this).children("td:eq(0)").find("#id");
+			if(id.is(':checked')){
+				strings=strings+id.val()+",";
+			};
+		});
+		$.post("/dels/",
+		{'ids':strings},
+		function(data,Status){
+			alert('Data: '+data+"\nStatus: "+Status);
+			window.parent.location.reload();
+		})
+	});
+			
+			
+});
+</script>
+</head>
+<body>
+<table border="1" id="bookinfo">
+<tr>
+<td>全选:<input type="checkbox" id="checkall">全不选:<input type="checkbox" id="notcheckall"></td><td align="center">图书名称</td><td align="center">作者</td><td align="center">价格(元)</td><td align="center">入库日期</td><td align="center">操作</td>
+</tr>
+
+{% if bookname%}
+	{%if author%}
+		{% for res in ress %}
+		<tr>
+		<td align='center'><input type="checkbox" id="id" value="{{res.id}}"></td><td align="center"><input type="text" id="bookname" value="{{res.bookname}}" disabled><input type="text" id="author" value="{{res.author}}" disabled></td><td align="center"><input type="text" id="price" value="{{res.price}}" disabled></td><td align="center"><input type="text" id="importdate" value="{{res.importdate}}" disabled></td><td align="center"><button id="delete">删除</button>
+		</tr>
+		{%endfor%}
+		</table>
+			{% if has_priv%}
+			<td align="center"><a href="/delete/?page=0&bookname={{bookname}}&author={{author}}">&nbsp;首页</a></td><td align="center"><a href="/delete/?page={{priv_page}}&bookname={{bookname}}&author={{author}}">&nbsp;上一页</a></td>
+			{%else%}
+			<td align="center">&nbsp;首页</td><td align="center">&nbsp;上一页</td>
+			{%endif%}
+			{% if has_next%}
+			<td align="center"><a href="/delete/?page={{next_page}}&bookname={{bookname}}&author={{author}}">&nbsp;下一页</a></td><td align="center"><a href="/delete/?page={{end_pages}}&bookname={{bookname}}&author={{author}}">&nbsp;尾页</a></td>
+			{%else%}
+			<td align="center">&nbsp;下一页</td><td align="center">&nbsp;尾页</td>
+			{%endif%}
+	{%else%}
+		{%for res in ress%}
+		<tr>
+                <td align='center'><input type="checkbox" id="id" value="{{res.id}}"></td><td align="center"><input type="text" id="bookname" value="{{res.bookname}}" disabled ></td><td align="center"><input type="text" id="author" value="{{res.author}}" disabled></td><td align="center"><input type="text" id="price" value="{{res.price}}" disabled></td><td align="center"><input type="text" id="importdate" value="{{res.importdate}}" disabled></td><td align="center"><button id="delete">删除</button>
+
+                </tr>
+                {%endfor%}
+		</table>
+                        {% if has_priv%}
+                        <td align="center"><a href="/delete/?page=0&bookname={{bookname}}">&nbsp;首页</a></td><td align="center"><a href="/delete/?page={{priv_page}}&bookname={{bookname}}">&nbsp;上一页</a></td>
+                        {%else%}
+                        <td align="center">&nbsp;首页</td><td align="center">&nbsp;上一页</td>
+                        {%endif%}
+                        {% if has_next%}
+                        <td align="center"><a href="/delete/?page={{next_page}}&bookname={{bookname}}">&nbsp;下一页</a></td><td align="center"><a href="/delete/?page={{end_pages}}&bookname={{bookname}}">&nbsp;尾页</a></td>
+                        {%else%}
+                        <td align="center">&nbsp;下一页</td><td align="center">&nbsp;尾页</td>
+                        {%endif%}
+	{%endif%}
+{%else%}
+	{% for res in ress %}
+                <tr>
+                <td align='center'><input type="checkbox" id="id" value="{{res.id}}"></td><td align="center"><input type="hidden" id="id" value="{{res.id}}"><input type="text" id="bookname" value="{{res.bookname}}" disabled></td><td align="center"><input type="text" id="author" value="{{res.author}}" disabled></td><td align="center"><input type="text" id="price" value="{{res.price}}" disabled></td><td align="center"><input type="text" id="importdate" value="{{res.importdate}}" disabled></td><td align="center"><button id="delete">删除</button>
+
+                </tr>
+                {%endfor%}
+		</table>
+                        {% if has_priv%}
+                        <td align="center"><a href="/delete/?page=0&author={{author}}">&nbsp;首页</a></td><td align="center"><a href="/delete/?page={{priv_page}}&author={{author}}">&nbsp;上一页</a></td>
+                        {%else%}
+                        <td align="center">&nbsp;首页</td><td align="center">&nbsp;上一页</td>
+                        {%endif%}
+                        {% if has_next%}
+                        <td align="center"><a href="/delete/?page={{next_page}}&author={{author}}">&nbsp;下一页</a></td><td align="center"><a href="/delete/?page={{end_pages}}&author={{author}}">&nbsp;尾页</a></td>
+                        {%else%}
+                        <td align="center">&nbsp;下一页</td><td align="center">&nbsp;尾页</td>
+                        {%endif%}
+{%endif%}
+</table>
+<input type="submit" value="批量删除" id="check">
+</body>
+</html>

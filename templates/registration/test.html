@@ -1,0 +1,118 @@
+<html>
+<head>
+<script type="text/javascript" src="/js/jquery.min.js"></script>
+<script type="text/javascript">
+function order1(){
+window.location.href="/test/?page=0&bookname={{bookname}}&order=1";
+}
+function order2(){
+window.location.href="/test/?page=0&bookname={{bookname}}&order=2";
+}
+function order3(){
+window.location.href="/test/?page=0&author={{author}}&order=1";
+}
+function order4(){
+window.location.href="/test/?page=0&author={{author}}&order=2";
+}
+//$(function(){
+//	$("#report_bookname").click(function(){
+//		bookname=$("#hid_book");
+//		$.get("/export/",
+//			{
+//			bookname:bookname.val()
+//			},
+//			function(data,status){
+////				alert("Data: "+data+"\nStatus: "+status);
+//			});
+//		location.href="/export/";
+//	});
+//	$("#report_author").click(function(){
+//		author=$("#hid_author");
+//		$.get("/export/",
+//			{
+//			author:author.val()
+//			},
+//			function(data,status){
+//		//		alert("Data: "+data+"\nStatus: "+status);
+//			});
+//		alert("author");
+//	});
+//});
+</script>
+<table border="1">
+{% if bookname %}
+<input type="hidden" id="hid_book" value="{{bookname}}">
+<tr>
+<td>图书名称</td><td>作者</td><td>价格(元)<input type="button" src="/static/s.jpg" value="升" OnClick="order1();">&nbsp;<input type="button" src="/static/j.png" value="降" OnClick="order2();"></td><td>入库时间</td><div  style="padding-left:380px;width:370px;"><button id="report_bookname" name="report_bookname" OnClick="window.location.href='/export/?bookname={{bookname}}';">导出数据</button></div>
+</tr>
+{% for res in ress%}
+<tr>
+<td>{{res.bookname}}</td><td>{{res.author}}</td><td>{{res.price}}</td><td>{{res.importdate}}</td>
+</tr>
+{%endfor%}
+<tr>
+</table>
+{%if order%}
+{%if has_priv%}
+<td><a href="/test/?page=0&bookname={{bookname}}&order={{order}}">&nbsp;首页</a></td><td><a href="/test/?page={{priv_page}}&bookname={{bookname}}&order={{order}}">&nbsp;上一页</a></td>
+{%else%}
+<td>&nbsp;首页</td><td>&nbsp;上一页</td>
+{%endif%}
+{%if has_next%}
+<td><a href="/test/?page={{next_page}}&bookname={{bookname}}&order={{order}}">&nbsp;下一页</a></td><td><a href="/test/?page={{end_pages}}&bookname={{bookname}}&order={{order}}">&nbsp;尾页</a></td>
+{%else%}
+<td>&nbsp;下一页</td><td>&nbsp;尾页</td>
+{%endif%}
+{%else%}
+{%if has_priv%}
+<td><a href="/test/?page=0&bookname={{bookname}}">&nbsp;首页</a></td><td><a href="/test/?page={{priv_page}}&bookname={{bookname}}">&nbsp;上一页</a></td>
+{%else%}
+<td>&nbsp;首页</td><td>&nbsp;上一页</td>
+{%endif%}
+{%if has_next%}
+<td><a href="/test/?page={{next_page}}&bookname={{bookname}}">&nbsp;下一页</a></td><td><a href="/test/?page={{end_pages}}&bookname={{bookname}}">&nbsp;尾页</a></td>
+{%else%}
+<td>&nbsp;下一页</td><td>&nbsp;尾页</td>
+{%endif%}
+{%endif%}
+</tr>
+{%endif%}
+{% if author %}
+<input type="hidden" id="hid_author" value="{{author}}">
+<tr>
+<td>图书名称</td><td>作者</td><td>价格(元)<input type="button" src="/static/s.jpg" value="升" OnClick="order3();">&nbsp;<input type="button" src="/static/j.png" value="降" OnClick="order4();"></td><td>入库时间</td><div  style="padding-left:380px;width:370px;"><button id="report_author" name="report_author" OnClick="window.location.href='/export/?author={{author}}'">导出数据</button></div>
+
+</tr>
+{% for res in ress%}
+<tr>
+<td>{{res.bookname}}</td><td>{{res.author}}</td><td>{{res.price}}</td><td>{{res.importdate}}</td>
+</tr>
+{%endfor%}
+<tr>
+</table>
+{%if order%}
+	{%if has_priv%}
+	<td><a href="/test/?page=0&author={{author}}&order={{order}}">&nbsp;首页</a></td><td><a href="/test/?page={{priv_page}}&author={{author}}&order={{order}}">&nbsp;上一页</a></td>
+	{%else%}
+	<td>&nbsp;首页</td><td>&nbsp;上一页</td>
+	{%endif%}
+	{%if has_next%}
+	<td><a href="/test/?page={{next_page}}&author={{author}}&order={{order}}">&nbsp;下一页</a></td><td><a href="/test/?page={{end_pages}}&author={{author}}&order={{order}}">&nbsp;尾页</a></td>
+	{%else%}
+	<td>&nbsp;下一页</td><td>&nbsp;尾页</td>
+	{%endif%}
+{%else%}
+	{%if has_priv%}
+	<td><a href="/test/?page=0&author={{author}}">&nbsp;首页</a></td><td><a href="/test/?page={{priv_page}}&author={{author}}">&nbsp;上一页</a></td>
+	{%else%}
+	<td>&nbsp;首页</td><td>&nbsp;上一页</td>
+	{%endif%}
+	{%if has_next%}
+	<td><a href="/test/?page={{next_page}}&author={{author}}">&nbsp;下一页</a></td><td><a href="/test/?page={{end_pages}}&author={{author}}">&nbsp;尾页</a></td>
+	{%else%}
+	<td>&nbsp;下一页</td><td>&nbsp;尾页</td>
+	{%endif%}
+{%endif%}
+</tr>
+{%endif%}
+</html>

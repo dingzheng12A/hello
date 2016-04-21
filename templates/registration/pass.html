@@ -1,0 +1,33 @@
+<html>
+<head>
+<style type="text/css">
+.pass{
+	display:block;
+	position:absolute;
+	top:0%;
+	left:0%;
+	background:white;
+	border:6px solid lightblue;
+	opacity:0.8;
+	
+}
+</style>
+</head>
+<body>
+<div class="pass">
+<form action="" method="post">
+<table>
+{%if error %}
+<tr><td></td><td>{{error}}</td></tr>
+{%endif%}
+{{form.as_table}}
+<td><input type="submit" value="修改"></td><td><input type="reset" value="清除"></td>
+</tr>
+</table>
+</form>
+{%if message%}
+<font color='blue'>{{message}}</font>
+{%endif%}
+</div>
+</body>
+</html>

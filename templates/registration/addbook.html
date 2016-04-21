@@ -1,0 +1,33 @@
+<html>
+<script src="/js/jquery.min.js" type="text/javascript"></script>
+<script type="text/javascript">
+$(function(){
+	$("#batch").click(function(){
+//		window.showModalDialog("/aaa/","","dialogWidth:360px;dialogHeight:240px");
+//		$.post("/aaa/",
+//			{
+//			name:'aaa'},
+//			function(data,status){
+//				alert("Data: "+data+"\nStatus: "+status);
+//			});
+		$.ajax({url:'/batch/',type:'post',dataType:'json',data:{name:'123',id:"456"},async:false,success:function(data){alert(data);},complete:function(data){window.location.href="/batch/";}});
+
+	});
+});
+</script>
+<body>
+<div style="position:absolute;left:260px;width:80px;height:80px;"><input id="batch" type="button" value="批量导入"></div>
+<table>
+<form action="" method="post">
+<table>
+{{form.as_table}}<td><input type="submit" value="提交" name="Submit"></td>
+<td><input type="reset" value="清除" name="reset"></td>
+</tr>
+{% if message%}
+<tr><td><font color="blue">{{message}}</font></td></tr>
+{%endif%}
+</table>
+</form>
+</table>
+</body>
+</html>

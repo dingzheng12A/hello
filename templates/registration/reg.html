@@ -1,0 +1,27 @@
+<html>
+<head>
+<style type="text/css">
+.reg{
+	display:block;
+	position:absolute;
+	top:50%;
+	left:50%;
+	background:blue;
+	border: 5px solid lightblue;
+	opacity:0.8;
+	-moz-opacity:0.8;
+	filter:alpha(opacity=80);
+}
+</style>
+</head>
+<body>
+<div class="reg">
+<table>
+<form action="" method="post">
+{{form.as_table}}
+<tr><td><input type="submit" name="reg" value="注册"></td><td><input type="reset" name="reg" value="清除"></td></tr>
+</table>
+</form>
+</div>
+</body>
+</html>

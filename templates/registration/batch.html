@@ -1,0 +1,92 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
+<style>
+.mess{
+	font-size: 20px;
+	width: 300px;
+}
+.help{
+	display:block;
+	position:absolute;
+	top: 0%;
+	left:60%;
+	background:lightblue;
+}
+.help_content{
+	display:none;
+	position:absolute;
+	top:0%;
+	left:5%;
+	width:70%;
+	height:70%;
+	background:black;
+	opacity: 0.8;
+	-moz-opacity:0.8;
+	filter:alpha(opacity=80);
+	z-index:1001;
+}
+.help_content_small{
+	display:none;
+	position:absolute;
+	top:0%;
+	left:0%;
+	width:90%;
+	height:80%;
+	background:white;
+	border: 16px solid lightblue;
+	opacity: 0.8;
+	-moz-opacity:0.8;
+	filter:alpha(opacity=80);
+	overflow:auto;
+	z-index:1002;
+}
+.close{
+	display:none;
+	position:absolute;
+	top:90%;
+	left:20%;
+	width:70px;
+	background: blue;
+	border: 3px solid lightblue;
+	z-index:1003;
+	text-align: center;
+	cursor: default;
+}
+</style>
+<script type="text/javascript" src="/js/jquery.min.js"></script>
+<script type="text/javascript">
+$(function(){
+	$("#help").click(function(){
+		$(".close").css("display","block");
+		$(".help_content").css("display","block");
+		$(".help_content_small").css("display","block");
+		
+		
+	});
+	$(".close>span").click(function(){
+		$(".close").css("display","none");
+		$(".help_content").css("display","none");
+		$(".help_content_small").css("display","none");
+		
+		
+	});
+});
+</script>
+</head>
+<body>
+<form action="" enctype="multipart/form-data" method="post">
+</table>
+{{form.as_table}}
+<input type="submit" value="上传">
+</form>
+{% if message%}
+{{message}}
+{%endif%}
+<div class="help"><span id="help">帮助</span></div>
+<div class="help_content">
+<div class="help_content_small"><pre>{{help_content}}</pre></div>
+<div class="close"><span id="close" style="font-size: 16px;">关闭</span></div>
+</div>
+</body>
+</html>

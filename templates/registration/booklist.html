@@ -1,0 +1,24 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<script type="text/javascript" src="/js/jquery.min.js"></script>
+<script type="text/javascript">
+	$(document).ready(function(){
+		$("#shengxu").click(function(){
+			alter("你好");
+		});
+	});
+</script>
+</head>
+<body>
+<form action="" method="post">
+图书名称:<input type="text" name="bookname">  作者:<input type="text" name="author">价格在:<input type="text" name="price1" size="10">和<input type="text" name="price2" size="10">之间<input type="submit" name="query" value="查询">      
+</form>
+{% if bookname%}
+<iframe name="left" id="rightMain" src="/test/?page=0&bookname={{bookname}}" frameborder="false" scrolling="auto" style="border:none;" width="100%" height="470" allowtransparency="true"></iframe>
+{%endif%}
+{% if author%}
+<iframe name="left" id="rightMain" src="/test/?page=0&author={{author}}" frameborder="false" scrolling="auto" style="border:none;" width="100%" height="470" allowtransparency="true"></iframe>
+{%endif%}
+</body>
+</html>

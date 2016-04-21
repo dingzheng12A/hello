@@ -1,0 +1,136 @@
+<html>
+<head>
+<script type="text/javascript" src="/js/jquery.min.js"></script>
+<script type="text/javascript">
+// $(function(){
+//	$("#bookinfo tr").each(function(i){
+//		var bookname=$(this).children("td:eq(0)").find("#bookname");
+//		var author=$(this).children("td:eq(1)").find("#author");
+//		var price=$(this).children("td:eq(2)").find("#price");
+//		$(this).children("td:eq(0)").children("button").click(function(){
+	//		alert(text.val());
+//			bookname.removeAttr("disabled");
+			
+//		});
+//		$(this).children("td:eq(1)").children("button").click(function(){
+	//		alert(text.val());
+//			author.removeAttr("disabled");
+			
+//		});
+//		$(this).children("td:eq(2)").children("button").click(function(){
+	//		alert(text.val());
+//			price.removeAttr("disabled");
+//			
+//		});
+//	});
+//	$("#update").click(function(){
+//		$.post("aaa.html",{email:"aaa@bbb.com"});
+//		alert("aaa");
+//	});
+//});
+//$(function(){
+$(function(){
+	$("#bookinfo tr").each(function(i){
+	 var	id=$(this).children("td:eq(0)").find("#id");
+	 var	bookname=$(this).children("td:eq(0)").find("#bookname");
+	 var	author=$(this).children("td:eq(1)").find("#author");
+	 var	price=$(this).children("td:eq(2)").find("#price");
+		$(this).children("td:eq(4)").find("#edit").click(function(){
+			bookname.removeAttr("disabled");
+			author.removeAttr("disabled");
+			price.removeAttr("disabled");
+		
+		});
+          var	new_bookname=$(this).children("td:eq(0)").find("#bookname");
+          var	new_author=$(this).children("td:eq(1)").find("#author");
+          var	new_price=$(this).children("td:eq(2)").find("#price");
+		
+		$(this).children("td:eq(4)").find("#update").click(function(){
+//			alert("new_bookname: "+new_bookname.val()+"old_name: "+bookname.val());
+			if(!$.isNumeric(new_price.val())){
+				alert("价格必须是数字或者小数！");
+			}else{
+			$.post("/update/",
+ 			{
+			id:id.val(),
+			bookname:new_bookname.val(),
+			author:new_author.val(),
+			price:new_price.val()
+  			},
+  			function(data,status){
+   			alert("Date: " + data + "\nStatus: " + status);
+			window.parent.location.reload(true);
+  			});
+			};
+		});
+	});
+			
+			
+});
+</script>
+</head>
+<body>
+<table border="1" id="bookinfo">
+<tr>
+<td align="center">图书名称</td><td align="center">作者</td><td align="center">价格(元)</td><td align="center">入库日期</td><td align="center">操作</td>
+</tr>
+
+{% if bookname%}
+	{%if author%}
+		{% for res in ress %}
+		<tr>
+		<td align="center"><input type="hidden" id="id" value="{{res.id}}"><input type="text" id="bookname" value="{{res.bookname}}" disabled><input type="text" id="author" value="{{res.author}}" disabled></td><td align="center"><input type="text" id="price" value="{{res.price}}" disabled></td><td align="center"><input type="text" id="importdate" value="{{res.importdate}}" disabled></td><td align="center"><button id="edit">编辑</button><button id="update">更新</button</td>
+		</tr>
+		{%endfor%}
+		</table>
+			{% if has_priv%}
+			<td align="center"><a href="/modify/?page=0&bookname={{bookname}}&author={{author}}">&nbsp;首页</a></td><td align="center"><a href="/modify/?page={{priv_page}}&bookname={{bookname}}&author={{author}}">&nbsp;上一页</a></td>
+			{%else%}
+			<td align="center">&nbsp;首页</td><td align="center">&nbsp;上一页</td>
+			{%endif%}
+			{% if has_next%}
+			<td align="center"><a href="/modify/?page={{next_page}}&bookname={{bookname}}&author={{author}}">&nbsp;下一页</a></td><td align="center"><a href="/modify/?page={{end_pages}}&bookname={{bookname}}&author={{author}}">&nbsp;尾页</a></td>
+			{%else%}
+			<td align="center">&nbsp;下一页</td><td align="center">&nbsp;尾页</td>
+			{%endif%}
+	{%else%}
+		{%for res in ress%}
+		<tr>
+                <td align="center"><input type="hidden" id="id" value="{{res.id}}"><input type="text" id="bookname" value="{{res.bookname}}" disabled ></td><td align="center"><input type="text" id="author" value="{{res.author}}" disabled></td><td align="center"><input type="text" id="price" value="{{res.price}}" disabled></td><td align="center"><input type="text" id="importdate" value="{{res.importdate}}" disabled></td><td align="center"><button id="edit">编辑</button><button id="update">更新</button</td>
+
+                </tr>
+                {%endfor%}
+		</table>
+                        {% if has_priv%}
+                        <td align="center"><a href="/modify/?page=0&bookname={{bookname}}">&nbsp;首页</a></td><td align="center"><a href="/modify/?page={{priv_page}}&bookname={{bookname}}">&nbsp;上一页</a></td>
+                        {%else%}
+                        <td align="center">&nbsp;首页</td><td align="center">&nbsp;上一页</td>
+                        {%endif%}
+                        {% if has_next%}
+                        <td align="center"><a href="/modify/?page={{next_page}}&bookname={{bookname}}">&nbsp;下一页</a></td><td align="center"><a href="/modify/?page={{end_pages}}&bookname={{bookname}}">&nbsp;尾页</a></td>
+                        {%else%}
+                        <td align="center">&nbsp;下一页</td><td align="center">&nbsp;尾页</td>
+                        {%endif%}
+	{%endif%}
+{%else%}
+	{% for res in ress %}
+                <tr>
+                <td align="center"><input type="hidden" id="id" value="{{res.id}}"><input type="text" id="bookname" value="{{res.bookname}}" disabled></td><td align="center"><input type="text" id="author" value="{{res.author}}" disabled></td><td align="center"><input type="text" id="price" value="{{res.price}}" disabled></td><td align="center"><input type="text" id="importdate" value="{{res.importdate}}" disabled></td><td align="center"><button id="edit">编辑</button><button id="update">更新</button</td>
+
+                </tr>
+                {%endfor%}
+		</table>
+                        {% if has_priv%}
+                        <td align="center"><a href="/modify/?page=0&author={{author}}">&nbsp;首页</a></td><td align="center"><a href="/modify/?page={{priv_page}}&author={{author}}">&nbsp;上一页</a></td>
+                        {%else%}
+                        <td align="center">&nbsp;首页</td><td align="center">&nbsp;上一页</td>
+                        {%endif%}
+                        {% if has_next%}
+                        <td align="center"><a href="/modify/?page={{next_page}}&author={{author}}">&nbsp;下一页</a></td><td align="center"><a href="/modify/?page={{end_pages}}&author={{author}}">&nbsp;尾页</a></td>
+                        {%else%}
+                        <td align="center">&nbsp;下一页</td><td align="center">&nbsp;尾页</td>
+                        {%endif%}
+{%endif%}
+</table>
+</body>
+</html>

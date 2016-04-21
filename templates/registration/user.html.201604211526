@@ -1,0 +1,97 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="content-type" content="text/html;charset=gb2312">
+<!--把下面代码加到<head>与</head>之间-->
+<style type="text/css">
+body,html{padding:0;margin:0;text-align:center;font:normal 14px 'arial';}
+#mainNavBar{width:100%;background:#999;padding:10px 0;}
+#nav{width:760px;height:30px;margin:0 auto;}
+#nav ul{padding:0;margin:0;}
+#nav ul li{position:relative;float:left;width:60px;height:30px;line-height:30px;overflow:hidden;list-style-type:none;}
+#nav ul li a{display:block;color:#fff;text-decoration:none;}
+#nav ul li a{display:block;color:#fff;text-decoration:none;}
+#subNav{position:absolute;width:150px;top:30px;left:0px;padding:5px;background:#666;color:#fff;text-align:left;}
+#subNav a{text-decoration:none;font-weight:normal;display:block;}
+#subNav a:hover{color:#f00;background:#f00;}
+</style>
+<script type="text/javascript">
+function changepass(){
+        window.showModalDialog("/passwd?username={{user.username}}","","dialogWidth:360px;dialogHeight:240px");
+}
+function addbook(){
+	window.showModalDialog("/addbook","","dialogWidth:360px;dialogHeight:240px");
+}
+function booklist(){
+	window.showModalDialog("/booklist/?page=0","","dialogWidth:780px;dialogHeight:240px");
+}
+function bookmod(){
+	window.showModalDialog("/bookmod/","","dialogWidth:800px;dialogHeight:240px");
+}
+function deletebook(){
+	window.showModalDialog("/deletebook/","","dialogWidth:887px;dialogHeight:240px");
+}
+</script>
+</head>
+<body>
+<div id="mainNavBar">
+<div id="nav">
+<ul>
+<li>
+<a href="#">添加</a>
+<div id="subNav">
+<a OnClick="addbook();" href="#">添加图书</a>
+<a OnClick="booklist();" href="#">查询图书</a>
+</div>
+</li>
+<li>
+<a href="#">编辑</a>
+<div id="subNav">
+<a OnClick="bookmod();"href="#">编辑图书</a>
+<a OnClick="deletebook();"href="#">删除图书</a>
+</div>
+</li>
+<li>
+<a href="#">管理</a>
+<div id="subNav">
+<a href="#" id="permission">权限管理</a>
+<a href="#">更改用户密码</a>
+<a OnClick="changepass();" href="#">修改密码</a>
+<a href="/accounts/logout">退出</a>
+</div>
+</li>
+</ul>
+</div>
+</div>
+<script language="javascript">
+var nav=document.getElementById("nav").getElementsByTagName("li");
+for(i=0;i<nav.length;i++){
+nav[i].onmouseover=function(){
+this.style.fontWeight="bold";
+this.style.overflow="visible";
+this.style.background="#666666";
+}
+nav[i].onmouseout=function(){
+this.style.fontWeight="normal";
+this.style.background="#999999"
+this.style.overflow="hidden";
+}
+}
+var nav2=document.getElementById("subNav").getElementsByTagName("li");
+for(i=0;i<nav2.length;i++){
+nav2[i].onmouseover=function(){
+this.style.fontWeight="bold";
+this.style.overflow="visible";
+this.style.background="#666666";
+}
+nav2[i].onmouseout=function(){
+this.style.fontWeight="normal";
+this.style.background="#999999"
+this.style.overflow="hidden";
+}
+}
+</script>
+欢迎用户 <font color="red">{{user.username}}</font> 登录！
+</form>
+</body>
+</html>

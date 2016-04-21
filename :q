@@ -1,0 +1,84 @@
+#coding=utf-8
+from django.http import HttpResponse,HttpResponseRedirect
+from django.shortcuts import render_to_response,render
+from django.template import RequestContext
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth.models import User
+from django.contrib.auth import authenticate
+from django.contrib import auth
+from haha.forms import RegForm,PassForm
+from DjangoVerifyCode import Code
+import json
+
+def code(request):
+	code=Code(request)
+	return code.display()
+
+def login(request):
+	if request.method=='POST':
+		username=request.POST['username']
+		password=request.POST['password']
+		user=authenticate(username=username,password=password)
+		_code=request.POST.get('captcha') or ''
+		code=Code(request)
+		if code.check(_code):
+			if user is not None and user.is_active:
+				auth.login(request,user)
+				request.session['username']=username
+				return HttpResponseRedirect('/accounts/profile/')
+			else:
+				errors="have error"
+				return render_to_response('registration/login.html',{'errors':errors,"code":code})
+		else:
+			capterr="验证码错误!"
+			return render_to_response("registration/login.html",{'capterr':capterr,"code":code},context_instance=RequestContext(request))
+	return render_to_response('registration/login.html')
+
+def logout(request):
+	auth.logout(request)
+	return render_to_response('registration/logged_out.html')
+
+@login_required(login_url='/accounts/')
+def profile(request):
+	if not request.user.is_authenticated():
+		return HttpResponseRedirect("/accounts/")
+	return render_to_response('registration/user.html',context_instance=RequestContext(request))
+
+def reg(request):
+	if request.method=='POST':
+		form=RegForm(request.POST)
+		if form.is_valid():
+			username=form.cleaned_data['Username']
+			email=form.cleaned_data['email']
+			password=form.cleaned_data['Password']
+			user=User.objects.create(username=username,email=email)
+			user.set_password(password)
+			user.save()
+			return HttpResponse("用户注册成功！请<a href='/accounts/'>登录</a>")
+		
+	else:
+		form=RegForm()
+	return render_to_response('registration/reg.html',{'form':form})
+
+
+@login_required(login_url="/accounts/")
+def password(request):
+	username=request.GET['username']
+	if request.method=='POST':
+		form=PassForm(request.POST)
+		if form.is_valid():
+			password=form.cleaned_data['orignPass']
+			newpass=form.cleaned_data.get('NewPass')
+			user=authenticate(username=username,password=password)
+			if user is None:
+				error="用户密码不正确!"
+				code="/code"
+				return render_to_response('registration/pass.html',{'form':form,'error':error,'code':code})
+			else:
+				user.set_password(newpass)
+				user.save()	
+				message='更改密码成功!请重新登录!'
+				return render_to_response('registration/pass.html',{'form':form,'message':message})
+	else:
+		form=PassForm()
+	return render_to_response('registration/pass.html',{'form':form})		

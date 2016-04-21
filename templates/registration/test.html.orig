@@ -1,0 +1,28 @@
+<body>
+<form action="" method="post">
+图书名:<input type="text" name="name"><input type="submit" value="查询">
+	<input type="hidden" name="bookname" value={{bookname}}>
+<table border="1">
+{%if results%}
+{% for result in results%}
+<tr>
+<td>{{result.bookname}}</td><td>{{result.author}}</td><td>{{result.price}}</td><td>{{result.importdate}}</td>
+</tr>
+{%endfor%}
+</table>
+{% if has_priv%}
+<tr><td><a href="/test/?page=0">首页</a></td><td><a href="/test/?page={{priv_page}}">前一页</a></td></tr>
+{%else%}
+<tr><td>首页</td><td>前一页</td></tr>
+{%endif%}
+{% if has_next%}
+<tr><td><a href="/test/?page={{next_page}}">下一页</a></td><td><a href="/text/?page={{end_pages}}">尾页</a></td></tr>
+{%else%}
+<tr><td>下一页</td><td>尾页</td></tr>
+{%endif%}
+{%else%}
+没有查询结果
+{%endif%}
+总共有{{count}}记录.
+</form>
+</body>
